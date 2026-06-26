@@ -1,4 +1,11 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
+
+
+class User(BaseModel):
+    name: str
+    age: int
+
 
 app = FastAPI()
 
@@ -22,3 +29,9 @@ def get_users(page: int = 1):
         "page": page,
         "users": fake_users,
     }
+
+
+# Automatic post validation using pydantic
+@app.post("users/")
+def create_user(user: User):
+    return f"User {user.name} created!"
